@@ -118,3 +118,374 @@ FROM
 ORDER BY
 	DEPTNO ASC,
 	SAL DESC;
+
+------ 05. WHERE절과 연산자
+
+---- 05-1. WHERE
+
+-- 기본 형식
+-- SELECT [조회할 열1 이름], [열2 이름], ..., [열N 이름]
+-- FROM [조회할 테이블 이름]
+-- WHERE [조회할 행을 선별하기 위한 조건식];
+
+-- 예제
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	DEPTNO = 30;
+
+---- 05-2. AND, OR 연산자
+
+-- AND 연산자
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	DEPTNO = 30
+	AND JOB = 'SALESMAN';
+
+-- OR 연산자
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	DEPTNO = 30
+	OR JOB = 'CLERK';
+
+---- 50-3. 연산자 종류와 활용 방법
+
+-- 산술 연산자
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	SAL * 12 = 36000;
+
+-- 비교 연산자
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	SAL >= 3000;
+
+-- 문자열 (1개)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	ENAME >= 'F';
+
+-- 문자열 (여러 개)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	ENAME <= 'FORZ';
+
+-- 등가 비교 연잔사 (!=)	// 권장
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	SAL != 3000;
+
+-- 등가 비교 연잔사 (<>)	// 권장
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	SAL <> 3000;
+
+-- 등가 비교 연잔사 (^=)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	SAL ^= 3000;
+
+-- 논리 부정 연산자
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	NOT SAL = 3000;
+
+-- IN 연산자
+
+-- 기본 형식
+-- SELECT [조회할 열1 이름], [열2 이름], ..., [열N 이름]
+-- FROM [조회할 테이블 이름]
+-- WHERE 열 이름 IN (데이터1, 데이터2, ... 데이터N);
+
+-- IN 연산자 (일반)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	JOB = 'MANAGER'
+	OR JOB = 'SALESMAN'
+	OR JOB = 'CLERK';
+
+-- IN 연산자 (적용)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	JOB IN ('MANAGER', 'SALESMAN', 'CLERK');
+
+-- IN 연산자 (NOT)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	JOB NOT IN ('MANAGER', 'SALESMAN', 'CLERK');
+
+-- BETWEEN A AND B 연산자
+
+-- 기본 형식
+-- SELECT [조회할 열1 이름], [열2 이름], ..., [열N 이름]
+-- FROM [조회할 테이블 이름]
+-- WHERE 열 이름 BETWEEN 최솟값 AND 최댓값;
+
+-- BETWEEN A AND B 연산자 (일반)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	SAL >= 2000
+	AND SAL <=3000;
+
+-- BETWEEN A AND B 연산자 (적용)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	SAL BETWEEN 2000 AND 3000;
+
+-- BETWEEN A AND B 연산자 (NOT)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	SAL NOT BETWEEN 2000 AND 3000;
+
+-- LIKE 연산자 (S로 시작)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	ENAME LIKE 'S%';
+
+-- LIKE 연산자 (두 번째 글자가 L)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	ENAME LIKE '_L%';
+
+-- LIKE 연산자 (사원 이름에 AM 포함)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	ENAME LIKE '%AM%';
+
+-- LIKE 연산자 (NOT)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	ENAME NOT LIKE '%AM%';
+
+-- LIKE 연산자 (와일드카드 사용)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	ENAME LIKE '%AM%';
+
+-- IS NULL 연산자 (등가 비교 연산자)	// 출력 안 됨
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	COMM = NULL;
+
+-- IS NULL 연산자 (예제)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	COMM IS NULL;
+
+-- IS NULL 연산자 (NOT)	// 직속 상관이 있는 사원 데이터
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	MGR IS NOT NULL;
+
+-- IS NULL 연산자 (AND 연산자)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	SAL > NULL
+	AND COMM IS NULL;
+
+-- IS NULL 연산자 (OR 연산자)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	SAL > NULL
+	OR COMM IS NULL;
+
+-- 집합 연산자 (UNION)	// 같은 열
+SELECT
+	EMPNO,
+	ENAME,
+	SAL,
+	DEPTNO
+FROM
+	EMP
+WHERE
+	DEPTNO = 10
+UNION
+SELECT
+	EMPNO,
+	ENAME,
+	SAL,
+	DEPTNO
+FROM
+	EMP
+WHERE
+	DEPTNO = 20;
+
+-- 집합 연산자 (UNION)	// 열 순서 다름
+SELECT
+	EMPNO,
+	ENAME,
+	SAL,
+	DEPTNO
+FROM
+	EMP
+WHERE
+	DEPTNO = 10
+UNION
+SELECT
+	SAL,
+	JOB,
+	DEPTNO,
+	SAL
+FROM
+	EMP
+WHERE
+	DEPTNO = 20;
+
+-- 집합 연산자 (UNION)	// 출력 결과 데이터가 같을 떄
+SELECT
+	EMPNO,
+	ENAME,
+	SAL,
+	DEPTNO
+FROM
+	EMP
+WHERE
+	DEPTNO = 10
+UNION
+SELECT
+	EMPNO,
+	ENAME,
+	SAL,
+	DEPTNO
+FROM
+	EMP
+WHERE
+	DEPTNO = 10;
+
+-- 집합 연산자 (UNION ALL)	// 출력 결과 데이터가 같을 떄
+SELECT
+	EMPNO,
+	ENAME,
+	SAL,
+	DEPTNO
+FROM
+	EMP
+WHERE
+	DEPTNO = 10
+UNION
+ALL
+SELECT
+	EMPNO,
+	ENAME,
+	SAL,
+	DEPTNO
+FROM
+	EMP
+WHERE
+	DEPTNO = 10;
+
+-- 집합 연산자 (MINUS)
+SELECT
+	EMPNO,
+	ENAME,
+	SAL,
+	DEPTNO
+FROM
+	EMP MINUS
+	SELECT
+		EMPNO,
+		ENAME,
+		SAL,
+		DEPTNO
+	FROM
+		EMP
+	WHERE
+		DEPTNO = 10;
+
+-- 집합 연산자 (INTERSECT)
+SELECT
+	EMPNO,
+	ENAME,
+	SAL,
+	DEPTNO
+FROM
+	EMP INTERSECT
+	SELECT
+		EMPNO,
+		ENAME,
+		SAL,
+		DEPTNO
+	FROM
+		EMP
+	WHERE
+		DEPTNO = 10;
