@@ -156,7 +156,7 @@ WHERE
 	DEPTNO = 30
 	OR JOB = 'CLERK';
 
----- 50-3. 연산자 종류와 활용 방법
+---- 05-3. 연산자 종류와 활용 방법
 
 -- 산술 연산자
 SELECT
@@ -489,3 +489,53 @@ FROM
 		EMP
 	WHERE
 		DEPTNO = 10;
+
+---- 06-1. 오라클 함수
+
+-- UPPER, LOWER, INITCAP
+SELECT
+	ENAME,
+	UPPER(ENAME),
+	LOWER(ENAME),
+	INITCAP(ENAME)
+FROM
+	EMP;
+
+-- UPPER 함수로 문자열 비교하기(사원 이름이 SCOTT인 데이터 찾기)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	UPPER(ENAME) = UPPER('scott');
+
+-- UPPER 함수로 문자열 비교하기(사원 이름에 SCOTT 단어를 포함한 데이터 찾기)
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	UPPER(ENAME) LIKE UPPER('%scott%');
+
+-- LENGTH
+SELECT
+	ENAME,
+	LENGTH(ENAME)
+FROM
+	EMP;
+
+-- LENGTH (사원 이름의 길이가 5 이상인 행 출력)
+SELECT
+	ENAME,
+	LENGTH(ENAME)
+FROM
+	EMP
+WHERE
+	LENGTH(ENAME) >= 5;
+
+-- LENGTH, LENGTHB
+SELECT
+	LENGTH('한글'),
+	LENGTHB('한글')
+FROM
+	DUAL;
