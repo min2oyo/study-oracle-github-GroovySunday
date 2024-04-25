@@ -5,9 +5,9 @@ DESC DEPT;
 
 DESC SALGRADE;
 
------- 04. SELECT문의 기본 형식
+-- 04. SELECT문의 기본 형식
 
----- 04-3. SELECTT, FROM
+-- 04-3. SELECTT, FROM
 
 -- 기본 형식
 -- SELECT [조회할 열1 이름], [열2 이름], ..., [열N 이름]
@@ -27,7 +27,7 @@ SELECT
 FROM
 	EMP;
 
----- 04-4. DISTINCT	// 중복 제거
+-- 04-4. DISTINCT	// 중복 제거
 
 -- 열이 한 개인 경우
 SELECT
@@ -49,7 +49,7 @@ SELECT
 FROM
 	EMP;
 
----- 04-5. alias	// 별칭
+-- 04-5. alias	// 별칭
 
 -- 연산 및 가공된 문장 이후 한 칸 띄우고 별칭 지정
 SELECT
@@ -87,7 +87,7 @@ SELECT
 FROM
 	EMP;
 
----- 04-6. ORDER BY	// 정렬
+-- 04-6. ORDER BY	// 정렬
 
 -- 기본 형식
 -- SELECT [조회할 열1 이름], [열2 이름], ..., [열N 이름]
@@ -119,9 +119,9 @@ ORDER BY
 	DEPTNO ASC,
 	SAL DESC;
 
------- 05. WHERE절과 연산자
+-- 05. WHERE절과 연산자
 
----- 05-1. WHERE
+-- 05-1. WHERE
 
 -- 기본 형식
 -- SELECT [조회할 열1 이름], [열2 이름], ..., [열N 이름]
@@ -136,7 +136,7 @@ FROM
 WHERE
 	DEPTNO = 30;
 
----- 05-2. AND, OR 연산자
+-- 05-2. AND, OR 연산자
 
 -- AND 연산자
 SELECT
@@ -156,7 +156,7 @@ WHERE
 	DEPTNO = 30
 	OR JOB = 'CLERK';
 
----- 05-3. 연산자 종류와 활용 방법
+-- 05-3. 연산자 종류와 활용 방법
 
 -- 산술 연산자
 SELECT
@@ -490,7 +490,7 @@ FROM
 	WHERE
 		DEPTNO = 10;
 
----- 06-1. 오라클 함수
+-- 06-1. 오라클 함수
 
 -- UPPER, LOWER, INITCAP
 SELECT
@@ -517,7 +517,7 @@ FROM
 WHERE
 	UPPER(ENAME) LIKE UPPER('%scott%');
 
--- LENGTH
+-- LENGTH	// 문자열 길이
 SELECT
 	ENAME,
 	LENGTH(ENAME)
@@ -539,3 +539,63 @@ SELECT
 	LENGTHB('한글')
 FROM
 	DUAL;
+
+-- SUBSTR	// 문자열 일부 추출
+
+-- 기본 형식
+-- SUBSTR(문자열 데이터, 시작 위치, 추출길이);
+-- SUBSTR(문자열 데이터, 시작 위치);
+-- // 마지막 위치가 음수일 경우에는 마지막 위치부터 거슬러 올라간 위치에서 시작함
+
+-- 예제
+SELECT
+	JOB,
+	SUBSTR(JOB, 1, 2),
+	SUBSTR(JOB, 3, 2),
+	SUBSTR(JOB, 5)
+FROM
+	EMP;
+
+-- 다른 함수와 사용
+SELECT
+	JOB,
+	SUBSTR(JOB, -LENGTH(JOB ) ),
+	SUBSTR(JOB, -LENGTH(JOB ), 2 ),
+	SUBSTR(JOB, -3)
+FROM
+	EMP;
+
+-- INSTR	// 문자열 데이터 안에서 특정 문자 위치를 찾음
+
+-- 기본 형식
+-- INSTR([대상 문자열 데이터(필수)],
+-- 			 [위치를 찾으려는 부분 문자(필수)],
+--			 [위치 찾기를 시작할 대상 문자열 데이터 위치(선택, 기본값은 1)],
+--			 [시작 위치에서 찾으려는 문자가 몇 번째인지 지정(선택, 기본값은 1)])
+-- // 찾으려는 값이 없으면 0을 반환함
+
+-- 예제
+SELECT
+	INSTR('HELLO, ORACLE!', 'L')       AS INSTR_1,
+	INSTR('HELLO, ORACLE!', 'L', 5)    AS INSTR_2,
+	INSTR('HELLO, ORACLE!', 'L', 2, 2) AS INSTR_3
+FROM
+	DUAL;
+
+-- 특정 문자를 포함하고 있는 행 찾기	// INSTR 함수
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	INSTR(ENAME, 'S') > 0;
+
+-- 특정 문자를 포함하고 있는 행 찾기	// LIKE 연산자	// 결과 같음
+SELECT
+	*
+FROM
+	EMP
+WHERE
+	ENAME LIKE '%S%';
+
+-- P.139 REPLACE 함수
